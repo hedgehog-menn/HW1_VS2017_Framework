@@ -270,7 +270,7 @@ void setPerspective()
 }
 
 // Vertex buffers
-GLuint VAO, VBO;
+GLuint VAO, VBO, VBO_COLOR;
 
 // Call back function for window reshape
 void ChangeSize(GLFWwindow *window, int width, int height)
@@ -325,6 +325,44 @@ void drawPlane()
 					   0.0, 1.0, 0.0};
 
 	// [TODO] draw the plane with above vertices and color
+	Matrix4 MVP = project_matrix * view_matrix;
+	GLfloat mvp[16];
+	mvp[0] = MVP[0];
+	mvp[4] = MVP[1];
+	mvp[8] = MVP[2];
+	mvp[12] = MVP[3];
+	mvp[1] = MVP[4];
+	mvp[5] = MVP[5];
+	mvp[9] = MVP[6];
+	mvp[13] = MVP[7];
+	mvp[2] = MVP[8];
+	mvp[6] = MVP[9];
+	mvp[10] = MVP[10];
+	mvp[14] = MVP[11];
+	mvp[3] = MVP[12];
+	mvp[7] = MVP[13];
+	mvp[11] = MVP[14];
+	mvp[15] = MVP[15];
+
+	glUniformMatrix4fv(iLocMVP, 1, GL_FALSE, mvp);
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(0);
+
+	glGenBuffers(1, &VBO_COLOR);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_COLOR);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(1);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 // Render function for display rendering
