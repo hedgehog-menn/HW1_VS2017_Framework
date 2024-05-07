@@ -816,7 +816,7 @@ void setupRC()
 	// [TODO] Load five model at here
 	for (int i = 0; i < model_list.size(); i++)
 	{
-		LoadModels(model_list[cur_idx]);
+		LoadModels(model_list[i]);
 	}
 }
 
