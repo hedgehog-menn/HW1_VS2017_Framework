@@ -312,6 +312,8 @@ void ChangeSize(GLFWwindow *window, int width, int height)
 	}
 }
 
+// Old version - cause memory leak
+/*
 void drawPlane()
 {
 	GLfloat vertices[18]{1.0, -0.9, -1.0,
@@ -362,6 +364,75 @@ void drawPlane()
 	glGenBuffers(1, &VBO_COLOR);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_COLOR);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(1);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+*/
+
+void setupPlane()
+{
+	GLfloat vertices[18]{1.0, -0.9, -1.0,
+						 1.0, -0.9, 1.0,
+						 -1.0, -0.9, -1.0,
+						 1.0, -0.9, 1.0,
+						 -1.0, -0.9, 1.0,
+						 -1.0, -0.9, -1.0};
+
+	GLfloat colors[18]{0.0, 1.0, 0.0,
+					   0.0, 0.5, 0.8,
+					   0.0, 1.0, 0.0,
+					   0.0, 0.5, 0.8,
+					   0.0, 0.5, 0.8,
+					   0.0, 1.0, 0.0};
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &VBO_COLOR);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_COLOR);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+}
+
+void drawPlane()
+{
+	Matrix4 MVP;
+	GLfloat mvp[16];
+
+	MVP = project_matrix * view_matrix;
+
+	mvp[0] = MVP[0];
+	mvp[4] = MVP[1];
+	mvp[8] = MVP[2];
+	mvp[12] = MVP[3];
+	mvp[1] = MVP[4];
+	mvp[5] = MVP[5];
+	mvp[9] = MVP[6];
+	mvp[13] = MVP[7];
+	mvp[2] = MVP[8];
+	mvp[6] = MVP[9];
+	mvp[10] = MVP[10];
+	mvp[14] = MVP[11];
+	mvp[3] = MVP[12];
+	mvp[7] = MVP[13];
+	mvp[11] = MVP[14];
+	mvp[15] = MVP[15];
+
+	// fixed that the plate shouldn't stick with model while in
+	glUniformMatrix4fv(iLocMVP, 1, GL_FALSE, mvp);
+
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_COLOR);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(1);
 
@@ -453,12 +524,11 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 		std::cout << "Model " << cur_idx + 1 << " is selected.\n";
 		break;
 	case GLFW_KEY_O:
-		std::cout << "Press O\n";
 		setOrthogonal();
 		break;
 	case GLFW_KEY_P:
-		std::cout << "Press P\n";
 		setPerspective();
+		break;
 	case GLFW_KEY_T:
 		cur_trans_mode = GeoTranslation;
 		break;
@@ -880,6 +950,7 @@ void setupRC()
 	{
 		LoadModels(model_list[i]);
 	}
+	setupPlane();
 	std::cout << "Model " << cur_idx + 1 << " is selected.\n";
 }
 
