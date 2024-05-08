@@ -470,6 +470,20 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 	case GLFW_KEY_U:
 		cur_trans_mode = ViewUp;
 		break;
+	case GLFW_KEY_I:
+		std::cout << "\n----------------------------------------------\n";
+		std::cout << "Translation Matrix:\n"
+				  << translate(models[cur_idx].position) << "\n";
+		std::cout << "Rotation Matrix:\n"
+				  << rotate(models[cur_idx].rotation) << "\n";
+		std::cout << "Scaling Matrix:\n"
+				  << scaling(models[cur_idx].scale) << "\n";
+		std::cout << "Viewing Matrix:\n"
+				  << view_matrix << "\n";
+		std::cout << "Projection Matrix:\n"
+				  << project_matrix << "\n";
+		std::cout << "----------------------------------------------\n\n";
+		break;
 	default:
 		break;
 	}
