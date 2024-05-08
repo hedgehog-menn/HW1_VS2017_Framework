@@ -424,7 +424,7 @@ void drawPlane()
 	mvp[11] = MVP[14];
 	mvp[15] = MVP[15];
 
-	// fixed that the plate shouldn't stick with model while in
+	// fixed that the plate shouldn't stick with model while Translate, Rotate, Scaling
 	glUniformMatrix4fv(iLocMVP, 1, GL_FALSE, mvp);
 
 	glBindVertexArray(VAO);
