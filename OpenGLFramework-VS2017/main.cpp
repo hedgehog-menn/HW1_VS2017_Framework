@@ -264,9 +264,13 @@ void setPerspective()
 		0, 0, -1, 0);
 
 	if (proj.aspect >= 1)
+	{
 		project_matrix[0] = f / proj.aspect;
+	}
 	else
+	{
 		project_matrix[5] = f * proj.aspect;
+	}
 }
 
 // Vertex buffers
@@ -368,7 +372,6 @@ void drawPlane()
 // Render function for display rendering
 void RenderScene(void)
 {
-	// std::cout << "RenderScene\n";
 	// clear canvas
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -384,7 +387,6 @@ void RenderScene(void)
 	// [TODO] multiply all the matrix
 	MVP = project_matrix * view_matrix * T * R * S;
 	// [TODO] row-major ---> column-major
-	// TODO: fix formatter
 	mvp[0] = MVP[0];
 	mvp[4] = MVP[1];
 	mvp[8] = MVP[2];
