@@ -20,7 +20,7 @@
 using namespace std;
 
 // Default window size
-const int WINDOW_WIDTH = 800;
+const int WINDOW_WIDTH = 600;
 const int WINDOW_HEIGHT = 600;
 
 bool mouse_pressed = false;
