@@ -571,6 +571,10 @@ static void cursor_pos_callback(GLFWwindow *window, double xpos, double ypos)
 	case GeoRotation:
 		models[cur_idx].rotation.x += PI / 180 * dif_y;
 		models[cur_idx].rotation.y -= PI / 180 * dif_x;
+
+		// Alternative rotating direction
+		// models[cur_idx].rotation.x -= PI / 180 * dif_y;
+		// models[cur_idx].rotation.y += PI / 180 * dif_x;
 		break;
 	case ViewEye:
 		main_camera.position.x += dif_x / 100;
