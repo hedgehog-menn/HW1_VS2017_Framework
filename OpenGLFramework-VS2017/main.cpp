@@ -435,15 +435,20 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 		solid_mode = !solid_mode;
 		break;
 	case GLFW_KEY_Z:
-		std::cout << "Press Z\n";
-		// cur_idx = (cur_idx + models.size() - 1) % models.size();
 		cur_idx = cur_idx == 0 ? models.size() - 1 : cur_idx - 1;
-		std::cout << "Press Z - model: " << cur_idx << "\n";
+		std::cout << "Model " << cur_idx + 1 << " is selected.\n";
 		break;
 	case GLFW_KEY_X:
-		std::cout << "Press X - model: " << cur_idx << "\n";
-		// cur_idx = (cur_idx + 1) % models.size();
 		cur_idx = cur_idx == models.size() - 1 ? 0 : cur_idx + 1;
+		std::cout << "Model " << cur_idx + 1 << " is selected.\n";
+		break;
+	case GLFW_KEY_LEFT:
+		cur_idx = cur_idx == 0 ? models.size() - 1 : cur_idx - 1;
+		std::cout << "Model " << cur_idx + 1 << " is selected.\n";
+		break;
+	case GLFW_KEY_RIGHT:
+		cur_idx = cur_idx == models.size() - 1 ? 0 : cur_idx + 1;
+		std::cout << "Model " << cur_idx + 1 << " is selected.\n";
 		break;
 	case GLFW_KEY_O:
 		std::cout << "Press O\n";
@@ -870,6 +875,7 @@ void setupRC()
 	{
 		LoadModels(model_list[i]);
 	}
+	std::cout << "Model " << cur_idx + 1 << " is selected.\n";
 }
 
 void glPrintContextInfo(bool printExtension)
