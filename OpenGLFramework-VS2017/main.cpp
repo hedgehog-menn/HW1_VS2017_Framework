@@ -499,28 +499,27 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
 {
 	// [TODO] scroll up positive, otherwise it would be negative
-	float dif = (float)xoffset - (float)yoffset;
 	switch (cur_trans_mode)
 	{
 	case GeoTranslation:
-		models[cur_idx].position.z += dif / 10;
+		models[cur_idx].position.z += (float)yoffset / 10;
 		break;
 	case GeoScaling:
-		models[cur_idx].scale.z += dif / 10;
+		models[cur_idx].scale.z += (float)yoffset / 10;
 		break;
 	case GeoRotation:
-		models[cur_idx].rotation.z += dif;
+		models[cur_idx].rotation.z += (float)yoffset / 10;
 		break;
 	case ViewEye:
-		main_camera.position.z -= dif / 10;
+		main_camera.position.z += (float)yoffset / 10;
 		setViewingMatrix();
 		break;
 	case ViewCenter:
-		main_camera.center.z += dif / 10;
+		main_camera.center.z += (float)yoffset / 10;
 		setViewingMatrix();
 		break;
 	case ViewUp:
-		main_camera.up_vector.z += dif / 10;
+		main_camera.up_vector.z += (float)yoffset / 10;
 		setViewingMatrix();
 		break;
 	default:
